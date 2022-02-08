@@ -3,30 +3,48 @@ package com.example
 import org.junit.jupiter.api.Test
 
 abstract class BaseUser {
-    abstract fun of(id: String):User
+    abstract fun of(id: String): User
 }
 
 class User(
     private val id: String,
     private var name: String?
-) {
+) : Role {
 
-    companion object: BaseUser() {
+    companion object : BaseUser() {
         override fun of(id: String): User = User(id, null)
     }
+
+    override fun getRole(): String = "READ"
 
     override fun toString(): String {
         return "User(id='$id', name=$name)"
     }
 }
 
+interface Role {
+    fun getRole(): String
+}
 
+inline fun Role(size: Int, action: (User) -> Any): List<User> {
+    val users = mutableListOf<User>()
+    for (i in 0 until size) {
+        val element = User(i.toString(), null)
+        action(element)
+        users.add(element)
+    }
+    return users
+}
 
+class UserFactory {
+    var nextId: Int = 0
+    fun next(name: String? = null) = User(nextId++.toString(), name)
+}
 
 class Item33 {
 
     @Test
-    internal fun name() {
+    internal fun `basic constructor`() {
         val user = User("1", null)
         println(user)
     }
@@ -41,17 +59,6 @@ class Item33 {
         println(basicUser)
 
 //        listOf<String>()
-    }
-
-    private var instance: User? = null
-    private fun singletonUser(id: String): User = instance ?: User(id, null).also { instance = it }
-
-    @Test
-    internal fun `singleton user`() {
-        val singletonUser = singletonUser("1")
-        println(singletonUser)
-        val singletonUser2 = singletonUser("2")
-        println(singletonUser2)
     }
 
     @Test
@@ -75,16 +82,16 @@ class Item33 {
     @Test
     internal fun `fake constructors`() {
         // they are top-level functions under the hood. This is why they are often called fake constructors.
-        User(2) { println(it) }
+        Role(2) { println(it) }
+//        List(4) { "Users$it" }
     }
-}
 
-inline fun User(size: Int, action: (User) -> Any): MutableList<User> {
-    val users = mutableListOf<User>()
-    for (i in 0 until size) {
-        val element = User(i.toString(), null)
-        action(element)
-        users.add(element)
+    @Test
+    internal fun `methods on a factory class`() {
+        val userFactory = UserFactory()
+        val u1 = userFactory.next()
+        println(u1)
+        val u2 = userFactory.next()
+        println(u2)
     }
-    return users
 }
