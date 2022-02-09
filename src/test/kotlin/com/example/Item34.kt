@@ -67,4 +67,25 @@ class Item34 {
     }
 
     val myFavorite3 = Pizza3.Builder("L").setBacon(3).build()
+
+    class PizzaTower(
+        val pizzas: List<Pizza2>
+    ) {
+        class Builder {
+            private var pizzas: List<Pizza2> = mutableListOf()
+
+            fun addPizza(
+                size: String, cheese: Int = 0, olives: Int = 0, bacon: Int = 0
+            ): Builder = apply {
+                pizzas.plus(Pizza2(size, cheese, olives, bacon))
+            }
+
+            fun build() = PizzaTower(pizzas)
+        }
+    }
+
+    val pizzaTower = PizzaTower.Builder().addPizza(size = "L", cheese = 4).build()
+    val pizzaTower2 = PizzaTower(pizzas = listOf(Pizza2(size = "L", cheese = 3)))
+
+
 }
