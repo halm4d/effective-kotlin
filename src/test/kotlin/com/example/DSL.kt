@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 class DSL {
 
     val p = pizza {
+        alma("asd")
         slice {
             size = "L"
             cheese = 1
@@ -46,11 +47,12 @@ data class Slice(
     }
 }
 
-data class Pizza(val slices: List<Slice>) {
+data class Pizza(val alma: String, val slices: List<Slice>) {
     class PizzaBuilder {
         private val slices = mutableListOf<Slice>()
+        private var alma = ""
         fun build(): Pizza {
-            return Pizza(slices)
+            return Pizza(alma, slices)
         }
         fun slice(
             size: String = "L", cheese: Int = 0, olives: Int = 0, bacon: Int = 0, init: Slice.SliceBuilder.() -> Unit = {}
@@ -58,6 +60,9 @@ data class Pizza(val slices: List<Slice>) {
             val sliceBuilder = Slice.SliceBuilder(size, cheese, olives, bacon)
             sliceBuilder.init()
             slices += sliceBuilder.build()
+        }
+        fun alma(value: String) {
+            alma = value
         }
     }
 }

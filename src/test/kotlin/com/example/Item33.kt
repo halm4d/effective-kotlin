@@ -7,8 +7,8 @@ abstract class BaseUser {
 }
 
 class User(
-    private val id: String,
-    private var name: String?
+    val id: String,
+    val name: String?
 ) : Role {
 
     companion object : BaseUser() {
@@ -26,7 +26,7 @@ interface Role {
     fun getRole(): String
 }
 
-inline fun Role(size: Int, action: (User) -> Any): List<User> {
+inline fun Role(size: Int, action: (User) -> Any): List<Role> {
     val users = mutableListOf<User>()
     for (i in 0 until size) {
         val element = User(i.toString(), null)
@@ -83,7 +83,7 @@ class Item33 {
     internal fun `fake constructors`() {
         // they are top-level functions under the hood. This is why they are often called fake constructors.
         Role(2) { println(it) }
-//        List(4) { "Users$it" }
+        List(4) { "Users$it" }
     }
 
     @Test

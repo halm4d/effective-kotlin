@@ -30,6 +30,25 @@ class Item34 {
         constructor(size: String) : this(size, 0)
     }
 
+    /*instead, we can use default arguments*/
+    class Pizza2(
+        val size: String,
+        val cheese: Int = 0,
+        val olives: Int = 0,
+        val bacon: Int = 0
+    ) {
+        override fun toString(): String {
+            return "Pizza2(size='$size', cheese=$cheese, olives=$olives, bacon=$bacon)"
+        }
+    }
+
+    val myFavorite = Pizza2(size = "L", bacon = 3)
+
+    @Test
+    internal fun `print myFavorite`() {
+        println(myFavorite)
+    }
+
     class Pizza3(
         val size: String = "L",
         val cheese: Int = 0,
@@ -68,25 +87,6 @@ class Item34 {
     @Test
     internal fun `print myFavorite3`() {
         println(myFavorite3)
-    }
-
-    /*instead, we can use default arguments*/
-    class Pizza2(
-        val size: String,
-        val cheese: Int = 0,
-        val olives: Int = 0,
-        val bacon: Int = 0
-    ) {
-        override fun toString(): String {
-            return "Pizza2(size='$size', cheese=$cheese, olives=$olives, bacon=$bacon)"
-        }
-    }
-
-    val myFavorite = Pizza2(size = "L", bacon = 3)
-
-    @Test
-    internal fun `print myFavorite`() {
-        println(myFavorite)
     }
 
 
